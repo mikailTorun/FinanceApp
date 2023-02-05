@@ -52,9 +52,17 @@ namespace FinanceApp.Persistence.Services.FinanceAppUser
             };
         }
 
-        public Task<Token> RefreshTokenLogin(string refreshTokenLoginRequest)
+        public async Task<Token> RefreshTokenLogin(string refreshTokenLoginRequest)
         {
-            throw new NotImplementedException();
+            e.FinanceAppUser? user = await _userManager.Users.FirstOrDefaultAsync(x => x.RefreshToken == refreshTokenLoginRequest);
+            if (user != null && user.RefreshTokenEndDate > DateTime.UtcNow)
+            {
+                Token token = await _tokenHandler.GenerateAccessTokenAsync(1, user);
+                await _appUserService.UpdateRefreshToken(token.RefreshToken, user, token.Expiration, 1);
+                return token;
+            }
+            else
+                throw new Exception("Token üretilemedi");
         }
     }
 }
