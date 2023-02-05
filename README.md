@@ -4,7 +4,7 @@
 
 This project is aimed to make simple CRUD operations in clead archited on finance senario.
 
-## Used Technolegies Stack and Features
+## Used Technologies Stack and Features
 
 - Onion Architecture
 - Mediatr Pattern
